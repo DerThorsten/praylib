@@ -1,0 +1,28 @@
+# a conda env
+name: praylib
+channels:
+  - conda-forge
+dependencies:
+  # Build tools
+  - cxx-compiler
+  - c-compiler
+  - cmake
+  - ninja
+  - scikit-build-core
+  - uv
+  # build deps
+  - python >=3.13
+  - nanobind
+  # run deps
+  - numpy
+  # Tests
+  - pytest
+  - pytest-sugar
+  # utils
+  - pre-commit
+  # # docs
+  # - sphinx
+  # - sphinx_rtd_theme
+  # - sphinxcontrib-video
+  # - sphinx-design
+  - pip

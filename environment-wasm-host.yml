@@ -1,0 +1,13 @@
+name: praylib-wasm-host
+channels:
+  - https://repo.prefix.dev/emscripten-forge-dev
+  - https://repo.prefix.dev/conda-forge
+dependencies:
+  - ipython
+  - pybind11 <3
+  - numpy
+  - pyjs
+  - libpython
+  - zstd
+  - openssl
+  - xz

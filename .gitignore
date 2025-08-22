@@ -98,3 +98,6 @@ deploy
 post.js.in
 
 build_wasm/
+
+
+emscripten_forge/recipe_src

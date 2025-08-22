@@ -1,0 +1,34 @@
+[project]
+name = "praylib-wasm-deploy"
+version = "0.1.0"
+description = "tools to deploy a praylib game / app to the web"
+authors = [
+    { name = "Dr. Thorsten Beier", email = "derthorstenbeier@gmail.com" }
+]
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+
+dependencies = [
+    "empack"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/DerThorsten/pyb2d3"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["praylib_wasm_deploy"]
+
+
+# console-scripts
+[project.scripts]
+"praylib-wasm-deploy" = "praylib_wasm_deploy.cli:main"
+
+
+[tool.setuptools.package-data]
+"praylib_wasm_deploy" = ["defaults/environment.yml", "defaults/praylibconf.toml"]

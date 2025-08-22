@@ -190,11 +190,11 @@ if(BUILD_WASM_HOST)
     # install
     install(TARGETS praylib_host DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
 
-    # install(FILES
-    #         "$<TARGET_FILE_DIR:praylib_host>/praylib_host.js"
-    #         "$<TARGET_FILE_DIR:praylib_host>/praylib_host.wasm"
-    #         DESTINATION ${CMAKE_INSTALL_BINDIR}
-    # )
+    install(FILES
+            "$<TARGET_FILE_DIR:praylib_host>/praylib_host.js"
+            "$<TARGET_FILE_DIR:praylib_host>/praylib_host.wasm"
+            DESTINATION ${CMAKE_INSTALL_BINDIR}
+    )
 
 endif()
 endif()
