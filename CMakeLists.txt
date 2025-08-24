@@ -140,6 +140,25 @@ endfunction()
 
 if(EMSCRIPTEN)
 if(BUILD_WASM_HOST)
+
+    foreach(var
+        CMAKE_C_FLAGS
+        CMAKE_CXX_FLAGS
+        CMAKE_EXE_LINKER_FLAGS
+        CMAKE_SHARED_LINKER_FLAGS
+    )
+        if(DEFINED ${var})
+            string(REGEX REPLACE " ?-s[= ]SIDE_MODULE(=1)?"
+                "" cleaned_flags "${${var}}")
+            set(${var} "${cleaned_flags}" CACHE STRING "Flags" FORCE)
+        endif()
+    endforeach()
+
+
+
+
+
+
     # include(CMakePackageConfigHelpers)
     include(GNUInstallDirs)
 
