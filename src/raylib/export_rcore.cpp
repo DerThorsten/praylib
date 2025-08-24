@@ -134,7 +134,11 @@
 #include <iostream>
 
 #include <nanobind/nanobind.h>
+
+// make it extern C
+extern "C" {
 #include <raylib.h>
+}
 
 // nanobind namespace
 namespace nb = nanobind;
