@@ -10,22 +10,21 @@
 namespace nb = nanobind;
  
 
-template<class VECTOR>
+template<std::size_t N, class T,  class VECTOR>
 void vector_add_implicit_tuple_conversion(nb::class_<VECTOR>& cls)
 {
     // add the constructor
     cls.def("__init__", [](VECTOR* t, nb::tuple tup) {
         // infer the size of the vector via sizeof
-        constexpr size_t size = sizeof(*t) / sizeof(float);
-        if (tup.size() != size) {
-            throw std::runtime_error("Vector constructor requires a tuple of size " + std::to_string(size));
+        if (tup.size() != N) {
+            throw std::runtime_error("constructor requires a tuple of size " + std::to_string(N));
         }
         // use some variadic shenanics
         new (t) VECTOR{};
-        // reinterpret as float * 
-        float* data = reinterpret_cast<float*>(t);  
-        for (size_t i = 0; i < size; i++) {
-            data[i] = nb::cast<float>(tup[i]);
+        // reinterpret as T * 
+        T* data = reinterpret_cast<T*>(t);  
+        for (size_t i = 0; i < N; i++) {
+            data[i] = nb::cast<T>(tup[i]);
         }
     });
     nb::implicitly_convertible<nb::tuple, VECTOR>();
@@ -40,7 +39,7 @@ void export_structs(nb::module_& m)
         .def_rw("y", &Vector2::y)
         .def("length", [](const Vector2& v) { return Vector2Length(v); }, "Get vector length")
     ;
-    vector_add_implicit_tuple_conversion(vec2);
+    vector_add_implicit_tuple_conversion<2, float>(vec2);
 
     auto vec3 = nb::class_<Vector3>(m, "Vector3");
     vec3.def(nb::init<float, float, float>())
@@ -49,7 +48,7 @@ void export_structs(nb::module_& m)
         .def_rw("z", &Vector3::z)
         .def("length", [](const Vector3& v) { return Vector3Length(v); }, "Get vector length")
     ;
-    vector_add_implicit_tuple_conversion(vec3);
+    vector_add_implicit_tuple_conversion<3, float>(vec3);
 
     auto vec4 = nb::class_<Vector4>(m, "Vector4");
     vec4.def(nb::init<float, float, float, float>())
@@ -64,7 +63,7 @@ void export_structs(nb::module_& m)
         .def_rw("w", &Vector4::w)
         .def("length", [](const Vector4& v) { return Vector4Length(v); }, "Get vector length")
     ;
-    vector_add_implicit_tuple_conversion(vec4);
+    vector_add_implicit_tuple_conversion<4, float>(vec4);
 
     auto mat4 = nb::class_<Matrix>(m, "Matrix");
     mat4.def(nb::init<>())
@@ -79,8 +78,6 @@ void export_structs(nb::module_& m)
         .def_rw("m8", &Matrix::m8)
         .def_rw("m9", &Matrix::m9)
     ;
-    vector_add_implicit_tuple_conversion(mat4);
-
     // Color
     auto color = nb::class_<Color>(m, "Color");
     color.def(nb::init<unsigned char, unsigned char, unsigned char, unsigned char>())
@@ -89,7 +86,7 @@ void export_structs(nb::module_& m)
         .def_rw("b", &Color::b)
         .def_rw("a", &Color::a)
     ;
-    vector_add_implicit_tuple_conversion(color);
+    vector_add_implicit_tuple_conversion<4, unsigned char>(color);
 
 
     // Camera2D
