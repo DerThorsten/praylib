@@ -62,7 +62,9 @@
 #include <iostream>
 
 #include <nanobind/nanobind.h>
+extern "C" {
 #include <raylib.h>
+}
 
 // nanobind namespace
 namespace nb = nanobind;

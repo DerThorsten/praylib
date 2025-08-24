@@ -4,7 +4,11 @@
 #include <raylib.h>
 
 // ray math
+extern "C" {
+#include <raylib.h>
+#define RAYMATH_DISABLE_CPP_OPERATORS
 #include <raymath.h>
+}
 
 // nanobind namespace
 namespace nb = nanobind;

@@ -1,10 +1,10 @@
 #include <iostream>
 
 #include <nanobind/nanobind.h>
-#include <raylib.h>
+// #include <raylib.h>
 
-// ray math
-#include <raymath.h>
+// // ray math
+// #include <raymath.h>
 
 // nanobind namespace
 namespace nb = nanobind;

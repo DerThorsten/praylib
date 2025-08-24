@@ -5,8 +5,9 @@
 #include <iostream>
 
 #include <nanobind/nanobind.h>
+extern "C" {
 #include <raylib.h>
-
+}
 #include <py_converter.hpp>
 
 // nanobind namespace
