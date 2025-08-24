@@ -50,7 +50,9 @@ if(BUILD_EXTENSION)
         )
         FetchContent_MakeAvailable(raylib)
     else()
-        find_package(raylib REQUIRED)
+        if(not EMSCRIPTEN)
+            find_package(raylib REQUIRED)
+        endif()
     endif()
 
     find_package(nanobind CONFIG REQUIRED)
@@ -93,9 +95,14 @@ if(BUILD_EXTENSION)
         PRIVATE ${CMAKE_SOURCE_DIR}/src/
     )
 
-    # link raylib
-    target_link_libraries(_praylib PRIVATE 
-        raylib)
+    if(EMSCRIPTEN)
+        # link raylib and hard code the path to the env variable $PREFIX/lib/libraylib.a
+        target_link_libraries(_praylib PRIVATE $ENV{PREFIX}/lib/libraylib.a)
+        target_include_directories(_praylib PRIVATE $ENV{PREFIX}/include)
+    else()
+        # link raylib
+        target_link_libraries(_praylib PRIVATE  raylib)
+    ()    
 
     # after each build, copy the extension to the python package directory
     add_custom_command(TARGET _praylib POST_BUILD
