@@ -14,6 +14,8 @@ option(BUILD_SHARED_LIBS     "Build using shared libraries" OFF)
 
 if(EMSCRIPTEN)
     set_property(GLOBAL PROPERTY TARGET_SUPPORTS_SHARED_LIBS TRUE)
+    # set the global definition PLATFORM_WEB
+    add_compile_definitions(PLATFORM_WEB)
 endif()
 
 
