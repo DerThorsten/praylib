@@ -102,7 +102,7 @@ if(BUILD_EXTENSION)
     else()
         # link raylib
         target_link_libraries(_praylib PRIVATE  raylib)
-    ()    
+    endif()    
 
     # after each build, copy the extension to the python package directory
     add_custom_command(TARGET _praylib POST_BUILD
