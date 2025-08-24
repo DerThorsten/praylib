@@ -13,7 +13,7 @@ classifiers = [
 description = "python bindings for raylib"
 name = "praylib"
 requires-python = ">=3.9"
-version = "0.7.1"
+version = "0.7.2"
 
 license = "MIT"
 license-files = [
