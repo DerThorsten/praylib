@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include <nanobind/nanobind.h>
-#include <raylib.h>
+
 
 // ray math
 extern "C" {
