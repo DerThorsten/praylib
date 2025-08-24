@@ -1,6 +1,6 @@
 [project]
 name = "praylib-wasm-deploy"
-version = "0.1.0"
+version = "0.7.0"
 description = "tools to deploy a praylib game / app to the web"
 authors = [
     { name = "Dr. Thorsten Beier", email = "derthorstenbeier@gmail.com" }
