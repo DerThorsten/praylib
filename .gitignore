@@ -51,7 +51,11 @@ build/
 dist/
 
 dependencies/
-sandbox/
+
+sandbox/hello_world/deploy
+sandbox/hello_world/env
+sandbox/hello_world/environment-wasm.yml
+sandbox/hello_world/praylibconf.toml
 
 
 # jupyter notebook checkpoints

@@ -1,0 +1,64 @@
+
+name: demo
+on:
+  push:
+  pull_request:
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-file: environment-wasm-build.yml
+          init-shell: >-
+            bash
+          cache-environment: true
+          post-cleanup: 'all'
+      
+      - name: Install praylib-wasm-deployment pkg
+        shell: bash -el {0}
+        run: |
+          python -m pip install companion_packages/praylib_wasm_deployment
+
+      - name: emscripten-forge-package
+        shell: bash -el {0}
+        run: |
+          # skip tests here since there is a dedicated job for that
+          ./scripts/build_emscripten_forge_pkg.sh --test=skip
+      
+      - name: build-wasm-project
+        shell: bash -el {0}
+        run: |
+          ./scripts/build_wasm_project.sh
+
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: sandbox/hello_world/deploy
+
+  deploy:
+      needs: build
+      if: github.ref == 'refs/heads/main'
+      permissions:
+        pages: write
+        id-token: write
+
+      environment:
+        name: github-pages
+        url: ${{ steps.deployment.outputs.page_url }}
+
+      runs-on: ubuntu-latest
+      steps:
+        - name: Deploy to GitHub Pages
+          id: deployment
+          uses: actions/deploy-pages@v4
