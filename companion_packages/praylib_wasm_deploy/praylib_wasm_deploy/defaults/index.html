@@ -175,7 +175,7 @@
             console.log(pyjs);  
             pyjs.eval("print('hello world')");
             pyjs.exec(`import os`);
-            pyjs.exec(`os.chdir("/home/web_user")`);
+            pyjs.exec(`os.chdir("/home/web_user/code")`);
 
 
             // send stop message to worker
@@ -183,9 +183,18 @@
 
             // remove the overlay canvas
             document.getElementById("overlay-canvas").remove();
+            
 
+            // get the query parameters
+            const queryParams = new URLSearchParams(window.location.search);
+            let main = queryParams.get("main");
+            if(!main) {
+                console.error("No main query parameter found");
+                main = "main.py";
+            }
+            console.log("Query parameter value:", main);
 
-            pyjs.eval_file("main.py");
+            pyjs.eval_file(main);
         }
         runPyjs();
 

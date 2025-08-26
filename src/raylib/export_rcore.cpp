@@ -3,30 +3,7 @@
 //     VrStereoConfig LoadVrStereoConfig(VrDeviceInfo device);     // Load VR stereo config for VR simulator device parameters
 //     void UnloadVrStereoConfig(VrStereoConfig config);           // Unload VR stereo config
 
-//     // Shader management functions
-//     // NOTE: Shader functionality is not available on OpenGL 1.1
-//     Shader LoadShader(const char *vsFileName, const char *fsFileName);   // Load shader from files and bind default locations
-//     Shader LoadShaderFromMemory(const char *vsCode, const char *fsCode); // Load shader from code strings and bind default locations
-//     bool IsShaderValid(Shader shader);                                   // Check if a shader is valid (loaded on GPU)
-//     int GetShaderLocation(Shader shader, const char *uniformName);       // Get shader uniform location
-//     int GetShaderLocationAttrib(Shader shader, const char *attribName);  // Get shader attribute location
-//     void SetShaderValue(Shader shader, int locIndex, const void *value, int uniformType);               // Set shader uniform value
-//     void SetShaderValueV(Shader shader, int locIndex, const void *value, int uniformType, int count);   // Set shader uniform value vector
-//     void SetShaderValueMatrix(Shader shader, int locIndex, Matrix mat);         // Set shader uniform value (matrix 4x4)
-//     void SetShaderValueTexture(Shader shader, int locIndex, Texture2D texture); // Set shader uniform value for texture (sampler2d)
-//     void UnloadShader(Shader shader);                                    // Unload shader from GPU memory (VRAM)
-
-//     // Screen-space-related functions
-//     #define GetMouseRay GetScreenToWorldRay     // Compatibility hack for previous raylib versions
-//     Ray GetScreenToWorldRay(Vector2 position, Camera camera);         // Get a ray trace from screen position (i.e mouse)
-//     Ray GetScreenToWorldRayEx(Vector2 position, Camera camera, int width, int height); // Get a ray trace from screen position (i.e mouse) in a viewport
-//     Vector2 GetWorldToScreen(Vector3 position, Camera camera);        // Get the screen space position for a 3d world space position
-//     Vector2 GetWorldToScreenEx(Vector3 position, Camera camera, int width, int height); // Get size position for a 3d world space position
-//     Vector2 GetWorldToScreen2D(Vector2 position, Camera2D camera);    // Get the screen space position for a 2d camera world space position
-//     Vector2 GetScreenToWorld2D(Vector2 position, Camera2D camera);    // Get the world space position for a 2d camera screen space position
-//     Matrix GetCameraMatrix(Camera camera);                            // Get camera transform matrix (view matrix)
-//     Matrix GetCameraMatrix2D(Camera2D camera);                        // Get camera 2d transform matrix
-
+//    
 
 //     // Custom frame control functions
 //     // NOTE: Those functions are intended for advanced users that want full control over the frame processing
@@ -133,7 +110,9 @@
 
 #include <iostream>
 
+#include <nanobind/ndarray.h>
 #include <nanobind/nanobind.h>
+
 
 // make it extern C
 extern "C" {
@@ -234,13 +213,6 @@ void export_drawing(nb::module_& m)
 
 void export_input_handling(nb::module_& m)
 {
-    // //------------------------------------------------------------------------------------
-    // // Input Handling Functions (Module: core)
-    // //------------------------------------------------------------------------------------
-
-    // // Input-related functions: keyboard
-
-
     m.def("is_key_pressed", &IsKeyPressed, "Check if a key has been pressed once", nb::arg("key"));
     m.def("is_key_pressed_repeat", &IsKeyPressedRepeat, "Check if a key has been pressed again", nb::arg("key"));
     m.def("is_key_down", &IsKeyDown, "Check if a key is being pressed", nb::arg("key"));
@@ -249,9 +221,6 @@ void export_input_handling(nb::module_& m)
     m.def("get_key_pressed", &GetKeyPressed, "Get key pressed (keycode), call it multiple times for keys queued, returns 0 when the queue is empty");
     m.def("get_char_pressed", &GetCharPressed, "Get char pressed (unicode), call it multiple times for chars queued, returns 0 when the queue is empty");
     m.def("set_exit_key", &SetExitKey, "Set a custom key to exit program (default is ESC)", nb::arg("key"));
-
-    // // Input-related functions: gamepads
-
 
     m.def("is_gamepad_available", &IsGamepadAvailable, "Check if a gamepad is available", nb::arg("gamepad"));
     m.def("get_gamepad_name", &GetGamepadName, "Get gamepad internal name id", nb::arg("gamepad"));
@@ -264,8 +233,6 @@ void export_input_handling(nb::module_& m)
     m.def("get_gamepad_axis_movement", &GetGamepadAxisMovement, "Get axis movement value for a gamepad axis", nb::arg("gamepad"), nb::arg("axis"));
     m.def("set_gamepad_mappings", &SetGamepadMappings, "Set internal gamepad mappings (SDL_GameControllerDB)", nb::arg("mappings"));
     m.def("set_gamepad_vibration", &SetGamepadVibration, "Set gamepad vibration for both motors (duration in seconds)", nb::arg("gamepad"), nb::arg("leftMotor"), nb::arg("rightMotor"), nb::arg("duration"));
-
-    // // Input-related functions: mouse
 
     m.def("is_mouse_button_pressed", &IsMouseButtonPressed, "Check if a mouse button has been pressed once", nb::arg("button"));
     m.def("is_mouse_button_down", &IsMouseButtonDown, "Check if a mouse button is being pressed", nb::arg("button"));
@@ -282,17 +249,11 @@ void export_input_handling(nb::module_& m)
     m.def("get_mouse_wheel_move_v", &GetMouseWheelMoveV, "Get mouse wheel movement for both X and Y");
     m.def("set_mouse_cursor", &SetMouseCursor, "Set mouse cursor", nb::arg("cursor"));
 
-
-    // // Input-related functions: touch
-
     m.def("get_touch_x", &GetTouchX, "Get touch position X for touch point 0 (relative to screen size)");
     m.def("get_touch_y", &GetTouchY, "Get touch position Y for touch point 0 (relative to screen size)");
     m.def("get_touch_position", &GetTouchPosition, "Get touch position XY for a touch point index (relative to screen size)", nb::arg("index"));
     m.def("get_touch_point_id", &GetTouchPointId, "Get touch point identifier for given index", nb::arg("index"));
     m.def("get_touch_point_count", &GetTouchPointCount, "Get number of touch points");  
-
-    // //--------------------- Gestures and Touch Handling Functions (Module: rgestures) --------------------
-    //------------------------------------------------------------------------------------
 
     m.def("set_gestures_enabled", &SetGesturesEnabled, "Enable a set of gestures using flags", nb::arg("flags"));
     m.def("is_gesture_detected", &IsGestureDetected, "Check if a gesture have been detected", nb::arg("gesture"));
@@ -303,13 +264,9 @@ void export_input_handling(nb::module_& m)
     m.def("get_gesture_pinch_vector", &GetGesturePinchVector, "Get gesture pinch delta");
     m.def("get_gesture_pinch_angle", &GetGesturePinchAngle, "Get gesture pinch angle");     
 
-
-    // //------------------------------------------------------------------------------------
-
 }
 void export_timing(nb::module_& m)
 {
-    // Timing functions
     m.def("set_target_fps", &SetTargetFPS, "Set target FPS (maximum)", nb::arg("fps"));
     m.def("get_frame_time", &GetFrameTime, "Get time in seconds for last frame drawn (delta time)");
     m.def("get_time", &GetTime, "Get elapsed time in seconds since InitWindow");
@@ -319,19 +276,6 @@ void export_timing(nb::module_& m)
 
 void export_screen_space(nb::module_& m)
 {
-
-    // // Screen-space-related functions
-    // #define GetMouseRay GetScreenToWorldRay     // Compatibility hack for previous raylib versions
-    // Ray GetScreenToWorldRay(Vector2 position, Camera camera);         // Get a ray trace from screen position (i.e mouse)
-    // Ray GetScreenToWorldRayEx(Vector2 position, Camera camera, int width, int height); // Get a ray trace from screen position (i.e mouse) in a viewport
-    // Vector2 GetWorldToScreen(Vector3 position, Camera camera);        // Get the screen space position for a 3d world space position
-    // Vector2 GetWorldToScreenEx(Vector3 position, Camera camera, int width, int height); // Get size position for a 3d world space position
-    // Vector2 GetWorldToScreen2D(Vector2 position, Camera2D camera);    // Get the screen space position for a 2d camera world space position
-    // Vector2 GetScreenToWorld2D(Vector2 position, Camera2D camera);    // Get the world space position for a 2d camera screen space position
-    // Matrix GetCameraMatrix(Camera camera);                            // Get camera transform matrix (view matrix)
-    // Matrix GetCameraMatrix2D(Camera2D camera);                        // Get camera 2d transform matrix
-
-
     m.def("get_mouse_ray", &GetMouseRay, "Get mouse ray (from mouse position)", nb::arg("mouse_position"), nb::arg("camera"));
     m.def("get_screen_to_world_ray", &GetScreenToWorldRay, "Get screen to world ray", nb::arg("position"), nb::arg("camera"));
     m.def("get_screen_to_world_ray_ex", &GetScreenToWorldRayEx, "Get screen to world ray (with viewport)", nb::arg("position"), nb::arg("camera"), nb::arg("width"), nb::arg("height"));
@@ -356,6 +300,126 @@ void export_text_drawing(nb::module_& m)
 }
 
 
+void export_shader_management(nb::module_& m)
+{
+
+    m.def("load_shader",&LoadShader, "Load shader from files and bind default locations", nb::arg("vs_filename"), nb::arg("fs_filename"));
+    m.def("load_shader_from_memory",&LoadShaderFromMemory, "Load shader from code strings and bind default locations", nb::arg("vs_code"), nb::arg("fs_code"));
+    m.def("is_shader_valid",&IsShaderValid, "Check if a shader is valid (loaded on GPU)", nb::arg("shader"));
+    m.def("get_shader_location",&GetShaderLocation, "Get shader uniform location", nb::arg("shader"), nb::arg("name"));
+    m.def("get_shader_location_attrib",&GetShaderLocationAttrib, "Get shader attribute location", nb::arg("shader"), nb::arg("name"));
+    m.def("set_shader_value", [](const Shader& shader, int locIndex,  nb::object value,int uniformType) {
+        switch (uniformType) {
+            case SHADER_UNIFORM_FLOAT:{
+                const float floatValue = nb::cast<float>(value);
+                SetShaderValue(shader, locIndex, &floatValue, uniformType);
+                break;
+            }
+            case SHADER_UNIFORM_VEC2:
+            {
+                const Vector2 vec2Value = nb::cast<Vector2>(value);
+                SetShaderValue(shader, locIndex, &vec2Value, uniformType);
+                break;
+            }
+            case SHADER_UNIFORM_VEC3:
+            {   
+                const Vector3 vec3Value = nb::cast<Vector3>(value);
+                SetShaderValue(shader, locIndex, &vec3Value, uniformType);
+                break;
+            }
+            case SHADER_UNIFORM_VEC4:
+            {
+                const Vector4 vec4Value = nb::cast<Vector4>(value);
+                SetShaderValue(shader, locIndex, &vec4Value, uniformType);
+                break;
+            }
+            case SHADER_UNIFORM_INT:
+            {
+                const int intValue = nb::cast<int>(value);
+                SetShaderValue(shader, locIndex, &intValue, uniformType);
+                break;
+            }
+            case SHADER_UNIFORM_IVEC2:
+            {
+                std::array<int, 2> ivec2 = { nb::cast<int>(value[0]), nb::cast<int>(value[1]) };
+                SetShaderValue(shader, locIndex, &ivec2, uniformType);
+                break;
+            }
+            case SHADER_UNIFORM_IVEC3:
+            {
+                std::array<int, 3> ivec3 = { nb::cast<int>(value[0]), nb::cast<int>(value[1]), nb::cast<int>(value[2]) };
+                SetShaderValue(shader, locIndex, &ivec3, uniformType);
+                break;
+            }
+            case SHADER_UNIFORM_IVEC4:
+            {
+                std::array<int, 4> ivec4 = { nb::cast<int>(value[0]), nb::cast<int>(value[1]), nb::cast<int>(value[2]), nb::cast<int>(value[3]) };
+                SetShaderValue(shader, locIndex, &ivec4, uniformType);
+                break;
+            }
+            case SHADER_UNIFORM_SAMPLER2D:
+            {
+                throw std::runtime_error("Setting sampler2D uniforms is not yet implemented");
+            }
+            default:
+                throw std::invalid_argument("Unsupported shader uniform type");
+        }
+    });
+    m.def("set_shader_value_v", [](const Shader& shader,int locIndex, nb::object value, int uniformType) {
+        switch (uniformType) {
+            case SHADER_UNIFORM_FLOAT:{
+                auto floatArray = nb::cast<nb::ndarray<float, nb::numpy, nb::shape<-1>, nb::c_contig>>(value);
+                SetShaderValueV(shader, locIndex, floatArray.data(), uniformType, floatArray.shape(0));
+            }
+            case SHADER_UNIFORM_VEC2:
+            {
+                auto vec2Array = nb::cast<nb::ndarray<float, nb::numpy, nb::shape<-1, 2>, nb::c_contig>>(value);
+                SetShaderValueV(shader, locIndex, vec2Array.data(), uniformType, vec2Array.shape(0));   
+            }
+            case SHADER_UNIFORM_VEC3:
+            {
+                auto vec3Array = nb::cast<nb::ndarray<float, nb::numpy, nb::shape<-1, 3>, nb::c_contig>>(value);
+                SetShaderValueV(shader, locIndex, vec3Array.data(), uniformType, vec3Array.shape(0));
+            }
+            case SHADER_UNIFORM_VEC4:
+            {
+                auto vec4Array = nb::cast<nb::ndarray<float, nb::numpy, nb::shape<-1, 4>, nb::c_contig>>(value);
+                SetShaderValueV(shader, locIndex, vec4Array.data(), uniformType, vec4Array.shape(0));
+            }
+            case SHADER_UNIFORM_INT:
+            {
+                auto intArray = nb::cast<nb::ndarray<int, nb::numpy, nb::shape<-1>, nb::c_contig>>(value);
+                SetShaderValueV(shader, locIndex, intArray.data(), uniformType, intArray.shape(0));
+            }
+            case SHADER_UNIFORM_IVEC2:
+            {
+                auto ivec2Array = nb::cast<nb::ndarray<int, nb::numpy, nb::shape<-1, 2>, nb::c_contig>>(value);
+                SetShaderValueV(shader, locIndex, ivec2Array.data(), uniformType, ivec2Array.shape(0));
+            }
+            case SHADER_UNIFORM_IVEC3:
+            {
+                auto ivec3Array = nb::cast<nb::ndarray<int, nb::numpy, nb::shape<-1, 3>, nb::c_contig>>(value);
+                SetShaderValueV(shader, locIndex, ivec3Array.data(), uniformType, ivec3Array.shape(0));
+            }
+            case SHADER_UNIFORM_IVEC4:
+            {
+                auto ivec4Array = nb::cast<nb::ndarray<int, nb::numpy, nb::shape<-1, 4>, nb::c_contig>>(value);
+                SetShaderValueV(shader, locIndex, ivec4Array.data(), uniformType, ivec4Array.shape(0));
+            }
+            case SHADER_UNIFORM_SAMPLER2D:
+            {
+                throw std::runtime_error("Setting sampler2D uniforms is not yet implemented");
+            }
+            default:{
+                throw std::invalid_argument("Unsupported shader uniform type");
+            }
+        }
+    });
+    m.def("set_shader_value_matrix", &SetShaderValueMatrix, "Set shader value (matrix 4x4)", nb::arg("shader"), nb::arg("loc_index"), nb::arg("mat"));
+    m.def("set_shader_value_texture", &SetShaderValueTexture, "Set shader value (texture)", nb::arg("shader"), nb::arg("loc_index"), nb::arg("texture"));
+    m.def("unload_shader", &UnloadShader, "Unload shader from GPU", nb::arg("shader"));
+}
+
 
 void export_rcore(nb::module_& m)
 {
@@ -365,5 +429,7 @@ void export_rcore(nb::module_& m)
     export_input_handling(m);
     export_timing(m);
     export_screen_space(m);
+    export_shader_management(m);
 
 }
+

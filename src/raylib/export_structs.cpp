@@ -101,5 +101,50 @@ void export_structs(nb::module_& m)
         .def_rw("rotation", &Camera2D::rotation)
         .def_rw("zoom", &Camera2D::zoom)
     ;
+
+
+    // Shader
+    auto shader = nb::class_<Shader>(m, "Shader");
+    ;
+
+
+    // Image
+    auto image = nb::class_<Image>(m, "Image");
+    image.def(nb::init<>())
+        .def_rw("data", &Image::data)
+        .def_rw("width", &Image::width)
+        .def_rw("height", &Image::height)
+        .def_rw("format", &Image::format)
+    ;
+
+    // Texture2D
+    auto texture2d = nb::class_<Texture2D>(m, "Texture2D");
+    texture2d.def(nb::init<>())
+        .def_rw("id", &Texture2D::id)
+        .def_rw("width", &Texture2D::width)
+        .def_rw("height", &Texture2D::height)
+        .def_rw("format", &Texture2D::format)
+    ;
+
+    // NPatchInfo
+    auto nPatchInfo = nb::class_<NPatchInfo>(m, "NPatchInfo");
+    nPatchInfo.def(nb::init<>())
+        .def_rw("source", &NPatchInfo::source)
+        .def_rw("left", &NPatchInfo::left)
+        .def_rw("top", &NPatchInfo::top)
+        .def_rw("right", &NPatchInfo::right)
+        .def_rw("bottom", &NPatchInfo::bottom)
+        .def_rw("layout", &NPatchInfo::layout)
+    ;
+
+    // Rectangle
+    auto rectangle = nb::class_<Rectangle>(m, "Rectangle");
+    rectangle.def(nb::init<>())
+        .def_rw("x", &Rectangle::x)
+        .def_rw("y", &Rectangle::y)
+        .def_rw("width", &Rectangle::width)
+        .def_rw("height", &Rectangle::height)
+    ;
+
 }
 

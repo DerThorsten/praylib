@@ -68,9 +68,12 @@ if(BUILD_EXTENSION)
         src/raylib/export_rshapes.cpp
         src/raylib/export_rtext.cpp
         src/raylib/export_structs.cpp
+        src/raylib/export_constants.cpp
+        src/raylib/export_rtexture.cpp
         # raylib-extensions
         src/raylib_extensions/export_raylib_extensions.cpp
         src/raylib_extensions/export_flipped_camera_2d.cpp
+        src/raylib_extensions/export_extra_shapes.cpp
     )
 
 

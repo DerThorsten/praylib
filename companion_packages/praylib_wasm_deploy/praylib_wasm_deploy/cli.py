@@ -53,10 +53,10 @@ def create_env(project_dir, extra_channels=None):
         "--platform", "emscripten-wasm32",
         "--yes"
     ]
-    print("args:", args)
+    
     for channel in extra_channels:
         args.extend(["-c", channel])
-
+    print("args:", args)
     subprocess.run(args)
 
 def build_project(project_dir, extra_channels=None):
@@ -83,10 +83,10 @@ def pack_wasm_env(project_dir):
         use_cache=False
     )
 
-    # pack the main file
-    pack_file(
-        host_file=Path(project_dir/"code"/"main.py"),
-        mount_dir=Path("/home/web_user/"),
+    # pack the complete code directory
+    pack_directory(
+        host_dir=Path(project_dir/"code"),
+        mount_dir=Path("/home/web_user/code"),
         outdir=Path(project_dir/"deploy"),
         outname='main.tar.gz'
     )

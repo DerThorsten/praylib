@@ -4,7 +4,7 @@ channels:
   - conda-forge
 dependencies:
   - python >=3.13
-  - praylib
+  - praylib >=0.7.3
   - praylib-host
   - pyjs
   - numpy

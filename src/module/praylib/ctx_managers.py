@@ -3,6 +3,8 @@ from .raylib import (
     end_drawing,
     begin_mode_2d,
     end_mode_2d,
+    begin_shader_mode,
+    end_shader_mode,
     Camera2D
 )
 
@@ -30,3 +32,14 @@ def mode_2d_ctx(camera: Camera2D):
         yield
     finally:
         end_mode_2d()
+
+@contextmanager
+def shader_ctx(shader):
+    """Context manager for shader operations.
+        this wraps begin_shader_mode()/end_shader_mode() in a context
+    """
+    begin_shader_mode(shader)
+    try:
+        yield
+    finally:
+        end_shader_mode()

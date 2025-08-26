@@ -16,4 +16,12 @@ NB_MODULE(_praylib, m)
 
     m.doc() = "Praylib!";
 
+    m.def("is_web", []() { 
+        #ifdef EMSCRIPTEN
+            return true;
+        #else
+            return false;
+        #endif
+    });
+
 }
