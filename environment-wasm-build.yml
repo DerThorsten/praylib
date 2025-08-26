@@ -11,3 +11,5 @@ dependencies:
   - pip
   - setuptools
   - micromamba
+  - rattler-build
+  - curl
