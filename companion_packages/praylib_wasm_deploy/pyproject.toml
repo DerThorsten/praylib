@@ -33,5 +33,7 @@ include = ["praylib_wasm_deploy"]
 [tool.setuptools.package-data]
 "praylib_wasm_deploy" = [
 "defaults/environment-wasm.yml", 
-"defaults/praylibconf.toml"
+"defaults/praylibconf.toml",
+"defaults/index.html",
+"defaults/overlay-worker.js"    
 ]
