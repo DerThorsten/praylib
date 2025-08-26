@@ -29,6 +29,7 @@ jobs:
         run: |
           python -m pip install ./companion_packages/praylib_wasm_deploy
 
+        
       - name: emscripten-forge-package
         shell: bash -el {0}
         run: |
