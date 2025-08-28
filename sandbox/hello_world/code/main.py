@@ -6,7 +6,6 @@ import itertools
 this_dir = Path(__file__).parent
 shader_dir = this_dir / "shader"
 
-
 win_size = (800, 800)
 screen_width = win_size[0]
 screen_height = win_size[1]
@@ -54,7 +53,6 @@ class Shader:
             0,
             255
         )
-
         
     def __call__(self, dt):
         self.time += dt
@@ -76,8 +74,6 @@ class Shader:
             with pray.mode_2d_ctx(cam):
                 pray.draw_texture(logo_texture, int(screen_width/2 - logo_texture.width/2), int(screen_height/2 - logo_texture.height/2), pray.WHITE)
 
-
-
             pos = pray.get_mouse_position()
 
             if pray.is_mouse_button_down(0):
@@ -89,9 +85,6 @@ class Shader:
             if pray.is_mouse_button_released(0):
                 self.all_line_strokes.append(self.line_stroke)
                 self.line_stroke = []
-            
-
-
 
             new_all_strokes = []
 
@@ -110,10 +103,8 @@ class Shader:
                         last_point = point
                 if new_strokes:
                     new_all_strokes.append(new_strokes)
-            
 
             # Draw the FPS counter
             pray.draw_fps(10, 10)
-
 
 pray.set_main_loop_callback(Shader())
